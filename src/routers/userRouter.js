@@ -82,15 +82,20 @@ userRouter.get("/users/myProfile", authenticateUser, (request, response) => {
   response.send(request.user);
 });
 
-userRouter.delete('/users/myProfile', authenticateUser, async (request, response) => {
+userRouter.delete(
+  "/users/myProfile",
+  authenticateUser,
+  async (request, response) => {
     try {
-        await request.user.remove()
-        console.log(chalk.black.bgGreen("User removed"));
-    } catch (e) {
-        console.log(chalk.black.bgRed(error));
-        console.log(error)
-        response.sendStatus(500)
+      await request.user.remove();
+      response.sendStatus(200);
+      console.log(chalk.black.bgGreen("Successfully deleted user"));
+    } catch (error) {
+      console.log(chalk.black.bgRed(error));
+      console.log(error);
+      response.sendStatus(500);
     }
-})
+  }
+);
 
 module.exports = userRouter;
