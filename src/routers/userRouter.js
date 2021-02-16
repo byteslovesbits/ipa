@@ -55,4 +55,42 @@ userRouter.post(
   }
 );
 
+userRouter.post(
+  "/users/logoutall",
+  authenticateUser,
+  async (request, response) => {
+    // The user is authenticated through the middleware so wipe the tokens array
+    // We attached the user to the request object within authenticateUser
+    try {
+      request.user.tokens = [];
+      await request.user.save();
+      console.log(
+        chalk.black.bgGreen("Successfully logged out of all sessions")
+      );
+      response.sendStatus(200);
+    } catch (error) {
+      console.log(chalk.black.bgRed(error), error);
+      response.status(500).send(error);
+    }
+  }
+);
+
+userRouter.get("/users/myProfile", authenticateUser, (request, response) => {
+  // User is authenticated and the user has been attached to the request object within authenticate user
+  console.log(chalk.black.bgGreen("User data"));
+  console.log(request.user);
+  response.send(request.user);
+});
+
+userRouter.delete('/users/myProfile', authenticateUser, async (request, response) => {
+    try {
+        await request.user.remove()
+        console.log(chalk.black.bgGreen("User removed"));
+    } catch (e) {
+        console.log(chalk.black.bgRed(error));
+        console.log(error)
+        response.sendStatus(500)
+    }
+})
+
 module.exports = userRouter;

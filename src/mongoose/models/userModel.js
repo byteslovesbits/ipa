@@ -71,13 +71,17 @@ userSchema.methods.makeJWT = async function () {
     }
   );
 
-  // Create da new array with the json web token attached to the jsonWebTokens array and save
+  // Create a new array with the json web token attached to the jsonWebTokens array and save
   this.tokens = this.tokens.concat({
     token: jsonWebToken,
   });
 
-  await this.save();
-  return jsonWebToken;
+  try {
+    await this.save();
+    return jsonWebToken;
+  } catch (error) {
+    console.log(chalk.black.bgRed(error), error);
+  }
 };
 
 // STATICS
