@@ -2,6 +2,7 @@ const express = require("express");
 const User = require("../mongoose/models/userModel");
 const chalk = require("chalk");
 const authenticateUser = require("../middleware/authenticateUser");
+const sendEmail = require("../sendgrid/sendgrid");
 
 const userRouter = new express.Router();
 
@@ -13,7 +14,15 @@ userRouter.post("/users", async (request, response) => {
     const token = await user.makeJWT();
 
     await user.save().then((user) => {
-      console.log(chalk.black.bgGreen("Successfully saved user"));
+      try {
+        console.log(chalk.black.bgGreen("Successfully saved user"));
+        sendEmail(user.email, user.name, "signup");
+        console.log(chalk.black.bgGreen("Successfully sent signup email"));
+      } catch (error) {
+        console.log(chalk.black.bgRed("Could not send Welcome email"));
+        console.log(error);
+      }
+
       response.status(201).send({ user, token: token });
     });
   } catch (error) {
@@ -88,8 +97,9 @@ userRouter.delete(
   async (request, response) => {
     try {
       await request.user.remove();
-      response.sendStatus(200);
       console.log(chalk.black.bgGreen("Successfully deleted user"));
+      response.sendStatus(200);
+      sendEmail(user.email, user.name, "deleteUser");
     } catch (error) {
       console.log(chalk.black.bgRed(error));
       console.log(error);

@@ -12,6 +12,7 @@
     "prettier": "^2.2.1"
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.4.2",
     "bcrypt": "^5.0.0",
     "chalk": "^4.1.0",
     "cors": "^2.8.5",
