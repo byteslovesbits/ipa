@@ -84,6 +84,34 @@ userSchema.methods.makeJWT = async function () {
   }
 };
 
+userSchema.methods.validateUpdates = function (updates, request, response){
+
+    const requestedUpdates = updates
+    const permittedUpdates = ["email", "password", "name"];
+
+    const isValidUpdate = requestedUpdates.every((update) => permittedUpdates.includes(update));
+
+    if (!isValidUpdate) {
+        throw new Error("Invalid updates");
+    }
+
+
+    try {
+        requestedUpdates.forEach((update) => (request.user[update] = request.body[update]));
+        response.status(201).send(request.user);
+        console.log(chalk.black.bgGreen("Updates applied successfully"));
+
+    } catch (error) {
+        console.log(chalk.black.bgRed("Could not apply updates"));
+        console.log(error)
+        response.status(400).send(error);
+    }
+
+
+    return request.user
+
+}
+
 // STATICS
 userSchema.statics.findUser = async (email, password) => {
   // First establish if the user actually exists in the database
