@@ -107,7 +107,6 @@ userSchema.methods.validateUpdates = function (updates, request, response){
         response.status(400).send(error);
     }
 
-
     return request.user
 
 }

@@ -15,6 +15,9 @@ const jobSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+      createdBy:{
+        type: mongoose.Schema.Types.ObjectId
+      }
   },
   {
     timestamps: { createdAt: "created@", updatedAt: "updated@" },

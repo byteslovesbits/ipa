@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../mongoose/models/userModel");
-const chalk = require("chalk");
+const {green, red, success,err} = require("../helpers/helpers")
+
 
 const authenticateUser = async (request, response, next) => {
   try {
@@ -22,8 +23,8 @@ const authenticateUser = async (request, response, next) => {
     request.user = user;
 
     next();
-  } catch (e) {
-    console.log(chalk.black.bgRed("error: Please authenticate..."));
+  } catch (error) {
+      err(red("error: Please authenticate with the system"))
     response.status(401).send({ error: "Please authenticate." });
   }
 };

@@ -3,6 +3,9 @@ const User = require("../mongoose/models/userModel");
 const chalk = require("chalk");
 const authenticateUser = require("../middleware/authenticateUser");
 const sendEmail = require("../sendgrid/sendgrid");
+const {green, red, success,err} = require("../helpers/helpers")
+
+
 
 const userRouter = new express.Router();
 
@@ -16,18 +19,22 @@ userRouter.post("/users", async (request, response) => {
 
     await user.save().then((user) => {
       try {
-        console.log(chalk.black.bgGreen("Successfully saved user"));
         sendEmail(user.email, user.name, "signup");
-        console.log(chalk.black.bgGreen("Successfully sent signup email"));
+        success(green("Successfully saved user"))
+          success(green("Successfully sent signup email"))
       } catch (error) {
-        console.log(chalk.black.bgRed("Could not send Welcome email"));
-        console.log(error);
+          err(red("Could not send Welcome email"), error)
       }
 
-      response.status(201).send({ user, token: token });
+      // Lockdown what is sent back to the user-agent
+      const User = user.toObject()
+        delete User.password
+        delete User.tokens
+
+        response.status(201).send({ User, token: token });
     });
   } catch (error) {
-    console.log(chalk.black.bgRed(error), error);
+    err(red(error), error)
     response.status(400).send(error);
   }
 });
@@ -36,8 +43,8 @@ userRouter.post("/users/login", async (request, response) => {
     const user = await User.findUser(request.body.email, request.body.password);
     response.send({ user, token: await user.makeJWT() });
   } catch (error) {
-    console.log(chalk.black.bgRed(error), error);
-    response.status(400).send(error);
+      err(red(error), error)
+      response.status(400).send(error);
   }
 });
 userRouter.post("/users/logout", authenticateUser, async (request, response) => {
@@ -50,11 +57,10 @@ userRouter.post("/users/logout", authenticateUser, async (request, response) => 
         await request.user.save();
         response.sendStatus(200);
       } catch (error) {
-        console.log(chalk.black.bgRed(error), error);
-        response.send("error: could not save resource");
+          err(red(error), error)
       }
     } catch (error) {
-      console.log(chalk.black.bgRed(error), error);
+        err(red(error), error)
       response.sendStatus(500);
     }
   });
@@ -64,12 +70,10 @@ userRouter.post("/users/logoutall", authenticateUser, async (request, response) 
     try {
       request.user.tokens = [];
       await request.user.save();
-      console.log(
-        chalk.black.bgGreen("Successfully logged out of all sessions")
-      );
-      response.sendStatus(200);
+        success(green("Successfully logged out of all sessions"))
+        response.sendStatus(200);
     } catch (error) {
-      console.log(chalk.black.bgRed(error), error);
+        err(red(error), error)
       response.status(500).send(error);
     }
 });
@@ -77,9 +81,8 @@ userRouter.post("/users/logoutall", authenticateUser, async (request, response) 
 // READ
 userRouter.get("/users/myProfile", authenticateUser, (request, response) => {
   // User is authenticated and the user has been attached to the request object within authenticate user
-  console.log(chalk.black.bgGreen("User data"));
-  console.log(request.user);
-  response.send(request.user);
+    success(green("User Data"), request.user)
+    response.send(request.user);
 });
 
 // UPDATE
@@ -89,26 +92,24 @@ userRouter.patch("/users/myProfile", authenticateUser, async (request, response)
 
     await updatedUser.save().then((user) => {
         try {
-            console.log(chalk.black.bgGreen("Successfully saved user"));
+            success(green("Successfully updated user"))
         } catch (error) {
-            console.log(chalk.black.bgRed("Could not save user"));
-            console.log(error);
+            err(red(error), error)
         }
     });
+});
 
-  });
-
+// DELETE
 
 userRouter.delete("/users/myProfile", authenticateUser, async (request, response) => {
     try {
       await request.user.remove();
-      console.log(chalk.black.bgGreen("Successfully deleted user"));
-      response.sendStatus(200);
-      sendEmail(user.email, user.name, "deleteUser");
+        success(green("Successfully deleted user"))
+        sendEmail(request.user.email, request.user.name, "deleteUser");
+        response.sendStatus(200);
     } catch (error) {
-      console.log(chalk.black.bgRed(error));
-      console.log(error);
-      response.sendStatus(500);
+        err(red(error), error)
+        response.sendStatus(500);
     }
   });
 
