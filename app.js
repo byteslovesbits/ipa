@@ -9,7 +9,8 @@ const cors = require("cors");
 const app = express();
 
 // app.use(express.urlencoded({ extended: false }));
-app.use(cors()); // https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+app.use(cors());
 
 
 //Recognize the incoming Request Object as a JSON Object. This method is called as a

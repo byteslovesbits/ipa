@@ -14,6 +14,7 @@ const authenticateUser = async (request, response, next) => {
       "tokens.token": request.header("Authorization").replace("Bearer ", ""),
     });
 
+
     if (!user) {
       throw new Error();
     }

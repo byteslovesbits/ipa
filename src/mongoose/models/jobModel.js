@@ -10,14 +10,25 @@ const jobSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+      notes:{
+          type: String,
+          maxlength: 1000,
+          trim: true,
+      },
     // It makes sense for new jobs to have a completed value default to false
-    completed: {
+    finished: {
       type: Boolean,
       default: false,
     },
       createdBy:{
-        type: mongoose.Schema.Types.ObjectId
+        type: mongoose.Schema.Types.ObjectId,
+          required: true,
+          // The ref option is what tells Mongoose which model to use during population.
+          // Here we reference documents within the User collection
+          ref: 'User'
+
       }
+
   },
   {
     timestamps: { createdAt: "created@", updatedAt: "updated@" },

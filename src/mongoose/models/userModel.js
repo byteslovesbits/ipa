@@ -3,6 +3,9 @@ const validator = require("validator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const chalk = require("chalk");
+const Job = require("../models/jobModel")
+const {_200, _201, _400, _500} = require("../../helpers/helpers")
+
 
 // SCHEMA - A mongoose schema defines and maps documents to a mongodb collection.
 
@@ -52,11 +55,17 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
+// MIDDLEWARE
 userSchema.pre("save", async function (next) {
   this.isModified("password")
     ? (this.password = await bcrypt.hash(this.password, 10))
     : next();
 });
+
+userSchema.pre('remove', async function (next){
+    await Job.deleteMany({createdBy: this._id})
+    next()
+})
 
 /*INSTANCE METHODS
 Each Schema can define instance and static methods for its model.*/
@@ -71,7 +80,7 @@ userSchema.methods.makeJWT = async function () {
     }
   );
 
-  // Create a new array with the json web token attached to the jsonWebTokens array and save
+  // Attach a json web token to to the tokens array on the user document
   this.tokens = this.tokens.concat({
     token: jsonWebToken,
   });
@@ -80,7 +89,7 @@ userSchema.methods.makeJWT = async function () {
     await this.save();
     return jsonWebToken;
   } catch (error) {
-    console.log(chalk.black.bgRed(error), error);
+      _500(error)
   }
 };
 
