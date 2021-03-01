@@ -2,7 +2,7 @@ const express = require("express");
 const User = require("../mongoose/models/userModel");
 const authenticateUser = require("../middleware/authenticateUser");
 const sendEmail = require("../sendgrid/sendgrid");
-const {_200, _201, _400, _500} = require("../helpers/helpers")
+const {_200, _201, _400,_404, _500} = require("../helpers/helpers")
 
 const userRouter = new express.Router();
 
@@ -24,6 +24,8 @@ userRouter.post("/users", async (request, response) => {
           delete User.tokens
 
           _201('User Saved to database')
+          response.set({"uri": '/users'})
+          response.set({'token': token })
           response.status(201).send({ User, token: token });
           sendEmail(user.email, user.name, "signup");
       } catch (error) {
@@ -36,7 +38,6 @@ userRouter.post("/users", async (request, response) => {
     response.status(400).send(error);
   }
 });
-
 userRouter.post("/users/login", async (request, response) => {
   try {
     const user = await User.findUser(request.body.email, request.body.password);
@@ -47,7 +48,6 @@ userRouter.post("/users/login", async (request, response) => {
       response.status(400).send(error);
   }
 });
-
 userRouter.post("/users/logout", authenticateUser, async (request, response) => {
     try {
       request.user.tokens = request.user.tokens.filter((token) => {
@@ -67,7 +67,6 @@ userRouter.post("/users/logout", authenticateUser, async (request, response) => 
       response.sendStatus(500);
     }
   });
-
 userRouter.post("/users/logoutall", authenticateUser, async (request, response) => {
     // The user is authenticated through the middleware so wipe the tokens array
     // We attached the user to the request object within authenticateUser
@@ -88,6 +87,30 @@ userRouter.get("/users/myProfile", authenticateUser, (request, response) => {
     _200("User Data", request.user)
     response.send(request.user);
 });
+userRouter.get("/users", authenticateUser, async (request,response)=>{
+    const users = await User.find({})
+    try{
+        if(!users){
+            return response.sendStatus(404)
+            throw new Error('No users found')
+        }
+
+    }catch(error){
+        _404('No users found', error)
+    }
+    response.send(users)
+})
+userRouter.get("/users/:id", authenticateUser, async (request,response)=>{
+    try{
+        const user = await User.findById(request.params.id)
+        if(!user){
+            return response.status(404).send('No user found')
+        }
+        response.send(user)
+    }catch(error){
+        response.send(error)
+    }
+})
 
 // UPDATE
 userRouter.patch("/users/myProfile", authenticateUser, async (request, response) => {
@@ -102,6 +125,10 @@ userRouter.patch("/users/myProfile", authenticateUser, async (request, response)
         }
     });
 });
+userRouter.patch("/users", authenticateUser, async (request, response) => {
+    // TODO
+});
+
 
 // DELETE
 userRouter.delete("/users/myProfile", authenticateUser, async (request, response) => {
@@ -116,5 +143,12 @@ userRouter.delete("/users/myProfile", authenticateUser, async (request, response
         response.sendStatus(500);
     }
   });
+userRouter.delete("/users", authenticateUser, async (request, response) => {
+    // TODO
+});
+
+
 
 module.exports = userRouter;
+
+

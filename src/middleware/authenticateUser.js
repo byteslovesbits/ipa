@@ -26,7 +26,7 @@ const authenticateUser = async (request, response, next) => {
     next();
   } catch (error) {
       err(red("error: Please authenticate with the system"))
-    response.status(401).send({ error: "Please authenticate." });
+    response.status(401).send({ error: error });
   }
 };
 

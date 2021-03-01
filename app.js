@@ -8,7 +8,7 @@ const cors = require("cors");
 // SETUP
 const app = express();
 
-// app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }));
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
 app.use(cors());
 
