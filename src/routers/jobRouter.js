@@ -327,8 +327,18 @@ description: No user found
 externalDocs:
     description: Learn more about user operations provided by this API.
     url: http://somerandomurl/learnmore
+    patch:
+        tags:
+            - PATCH (users)
+summary: update my profile
+description: update all details of my profile
+responses:
+    '201':
+description: profile updated
+'400':
+description: bad request
 
-    /jobs:
+/jobs:
 get:
     tags:
         - READ (jobs)

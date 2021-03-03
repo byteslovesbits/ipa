@@ -29,15 +29,6 @@
             <li class="tab"><a href="#readContainer">READ</a></li>
             <li class="tab"><a href="#updateContainer">UPDATE</a></li>
             <li class="tab"><a href="#deleteContainer">DELETE</a></li>
-
-
-
-            <!--            <li class="tab"><a class="active" href="#createContainer">READ</a></li>-->
-<!--            <li class="tab"><a href="#registerWithEmailPage">READ</a></li>-->
-<!--            <li class="tab"><a href="#loginPage">UPDATE</a></li>-->
-<!--            <li class="tab"><a href="#logoutPage">DELETE</a></li>-->
-
-
         </ul>
     </div>
 </nav>
@@ -166,7 +157,35 @@
         <ul class="collapsible">
             <li>
                 <div class="collapsible-header"><i class="material-icons">filter_drama</i>POST /jobs</div>
-                <div class="collapsible-body"><span>This HTTP POST request creates a user. Fill in the details to send a JSON payload to the express.js server</span>
+                <div class="collapsible-body"><span>This HTTP POST request creates a job within the Mongodb database. Fill in the details to send a JSON payload to the express.js server</span>
+
+                    <form id="createJobForm">
+                                    <div class="row center-align">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">edit</i>
+                                <input id="description" type="text" class="validate" name="description">
+                                <label for="description">job description</label>
+                            </div>
+                        </div>
+                        <div class="row center-align">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">done</i>
+                                <input id="finished" type="text" class="validate" name="finished">
+                                <label for="finished">finished?</label>
+                            </div>
+                        </div>
+                        <div class="row center-align">
+                            <div class="input-field col s12">
+                                <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                                    <i class="material-icons right">send</i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+
+
+
                 </div>
             </li>
         </ul>
@@ -174,10 +193,64 @@
 
 
 <div class="container" id="readContainer">
+    <h6><strong>Users</strong></h6>
 
+    <ul class="collapsible">
+        <li>
+            <div class="collapsible-header"><i class="material-icons">filter_drama</i>GET /myProfile</div>
+            <div class="collapsible-body"><span>This HTTP GET request gets my profile</span>
 
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <button id="getMyProfileButton" class="btn waves-effect waves-light" type="submit" name="action">Submit
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+            </div>
+        </li>
+    </ul>
+    <ul class="collapsible">
+        <li>
+            <div class="collapsible-header"><i class="material-icons">filter_drama</i>GET /users</div>
+            <div class="collapsible-body"><span>This HTTP GET request gets all users in the database</span>
+
+                <div class="row center-align">
+                    <div class="input-field col s12">
+                        <button id="getUsersButton" class="btn waves-effect waves-light" type="submit" name="action">Submit
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <ul class="collapsible">
+        <li>
+            <div class="collapsible-header"><i class="material-icons">filter_drama</i>GET /users/{id}</div>
+            <div class="collapsible-body"><span>This HTTP GET request gets my a profile by id</span>
+
+                <div class="row center-align">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">edit</i>
+                        <input id="userId" type="text" class="validate" name="userId" max="12" maxlength="12">
+                        <label for="userId">user id</label>
+                    </div>
+                </div>
+
+                <div class="row center-align">
+                    <div class="input-field col s12">
+                        <button id="getUserByIdButton" class="btn waves-effect waves-light" type="submit" name="action">Submit
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
 
 </div>
+
 <div class="container" id="updateContainer">
 
 

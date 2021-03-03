@@ -82,13 +82,14 @@ userRouter.post("/users/logoutall", authenticateUser, async (request, response) 
 });
 
 // READ
-userRouter.get("/users/myProfile", authenticateUser, (request, response) => {
+userRouter.get("/users/myprofile", authenticateUser, (request, response) => {
   // User is authenticated and the user has been attached to the request object within authenticate user
     _200("User Data", request.user)
     response.send(request.user);
 });
 userRouter.get("/users", authenticateUser, async (request,response)=>{
     const users = await User.find({})
+
     try{
         if(!users){
             return response.sendStatus(404)
@@ -100,8 +101,9 @@ userRouter.get("/users", authenticateUser, async (request,response)=>{
     }
     response.send(users)
 })
-userRouter.get("/users/:id", authenticateUser, async (request,response)=>{
+userRouter.get("/users/:id", async (request,response)=>{
     try{
+
         const user = await User.findById(request.params.id)
         if(!user){
             return response.status(404).send('No user found')

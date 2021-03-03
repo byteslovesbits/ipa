@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../mongoose/models/userModel");
-const {green, red, success,err} = require("../helpers/helpers")
+const {red, err} = require("../helpers/helpers")
 
 
 const authenticateUser = async (request, response, next) => {

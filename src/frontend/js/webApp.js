@@ -64,6 +64,53 @@ class Model {
             this.onLogoutUserAllSessionsChanged(data)
         });
     }
+    async getMyProfile(user){
+        const rawResponse = await fetch("http://localhost:3000/users/myprofile", {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify(user),
+        });
+
+        await rawResponse.json().then((data) =>{
+            this.onGetMyProfileChanged(data)
+        });
+    }
+    async getUsers(user){
+        const rawResponse = await fetch("http://localhost:3000/users", {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify(user),
+        });
+
+        await rawResponse.json().then((data) =>{
+            this.onGetUsersChanged(data)
+        });
+    }
+    async getUserById(user){
+        const rawResponse = await fetch("http://localhost:3000/users", {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify(user),
+        });
+
+        await rawResponse.json().then((data) =>{
+            this.onGetUserByIdChanged(data)
+        });
+    }
+
+
 
     // BINDERS
     bindUserCreatedChanged(callback) {
@@ -78,6 +125,18 @@ class Model {
     bindLogoutUserAllSessionsChanged(callback) {
         this.onLogoutUserAllSessionsChanged = callback
     }
+    bindGetMyProfileChanged(callback) {
+        this.onGetMyProfileChanged = callback
+    }
+    bindGetUsersChanged(callback) {
+        this.onGetUsersChanged = callback
+    }
+    bindGetUserByIdChanged(callback) {
+        this.onGetUserByIdChanged = callback
+    }
+
+
+
 
 }
 
@@ -87,7 +146,9 @@ class View{
         this.loginUserForm = document.querySelector("#loginUserForm");
         this.logoutButton = document.querySelector("#logoutButton");
         this.logoutAllUserSessionsButton = document.querySelector("#logoutAllUserSessionsButton");
-
+        this.getMyProfileButton = document.querySelector("#getMyProfileButton");
+        this.getUsersButton = document.querySelector("#getUsersButton");
+        this.getUserByIdButton = document.querySelector("#getUserByIdButton");
 
     }
 
@@ -147,7 +208,24 @@ class View{
             handler();
         });
     }
-
+    bindGetMyProfile(handler) {
+        this.getMyProfileButton.addEventListener("click", async (event) => {
+            event.preventDefault();
+            handler();
+        });
+    }
+    bindGetUsers(handler) {
+        this.getUsersButton.addEventListener("click", async (event) => {
+            event.preventDefault();
+            handler();
+        });
+    }
+    bindGetUserById(handler) {
+        this.getUserByIdButton.addEventListener("click", async (event) => {
+            event.preventDefault();
+            handler();
+        });
+    }
 
 
     // UPDATE VIEWS
@@ -191,6 +269,15 @@ class View{
     updateLogoutAllUserSessionsView = (user) =>{
         console.log('Button Clicked')
     }
+    updateGetMyProfileView = (user) =>{
+        console.log('Button Clicked')
+    }
+    updateGetUsersView = (user) =>{
+        console.log('Button Clicked')
+    }
+    updateGetUserByIdView = (user) =>{
+        console.log('Button Clicked')
+    }
 
 }
 
@@ -213,6 +300,14 @@ class Controller{
         this.model.bindLogoutUserAllSessionsChanged(this.onLogoutUserAllSessionsChanged)
         this.view.bindLogoutUserAllSessions(this.handleLogoutAllUserSessions)
 
+        this.model.bindGetMyProfileChanged(this.onGetMyProfileChanged)
+        this.view.bindGetMyProfile(this.handleGetMyProfile)
+
+        this.model.bindGetUsersChanged(this.onGetUsersChanged)
+        this.view.bindGetUsers(this.handleGetUsers)
+
+        this.model.bindGetUserByIdChanged(this.onGetUserByIdChanged)
+        this.view.bindGetUserById(this.handleGetUserById)
     }
 
     // HANDLERS
@@ -228,8 +323,15 @@ class Controller{
     handleLogoutAllUserSessions = (user) => {
         this.model.logoutUserAllSessions(user)
     }
-
-
+    handleGetMyProfile = (user) => {
+        this.model.getMyProfile(user)
+    }
+    handleGetUsers = (user) => {
+        this.model.getUsers(user)
+    }
+    handleGetUserById = (user) => {
+        this.model.getUserById(user)
+    }
 
 
     // ONCHANGE
@@ -245,9 +347,15 @@ class Controller{
     onLogoutUserAllSessionsChanged = (user)=>{
         this.view.updateLogoutAllUserSessionsView(user)
     }
-
-
+    onGetMyProfileChanged = (user)=>{
+        this.view.updateGetMyProfileView(user)
+    }
+    onGetUsersChanged = (user)=>{
+        this.view.updateGetUsersView(user)
+    }
+    onGetUserByIdChanged = (user)=>{
+        this.view.updateGetUserByIdView(user)
+    }
 
 }
-
 const app = new Controller(new Model(), new View())

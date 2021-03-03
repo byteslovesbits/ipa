@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const chalk = require("chalk");
 const Job = require("../models/jobModel")
-const {_200, _201, _400, _500} = require("../../helpers/helpers")
+const {_500} = require("../../helpers/helpers")
 
 
 // SCHEMA - A mongoose schema defines and maps documents to a mongodb collection.
