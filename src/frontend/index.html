@@ -17,11 +17,6 @@
     <div class="nav-wrapper">
         <a href="#" class="brand-logo">Logo</a>
         <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="create.html">Sass</a></li>
-            <li><a href="badges.html">Components</a></li>
-            <li><a href="collapsible.html">JavaScript</a></li>
-        </ul>
     </div>
     <div class="nav-content">
         <ul class="tabs tabs-transparent">
@@ -33,14 +28,15 @@
     </div>
 </nav>
 <ul class="sidenav" id="mobile-demo">
-    <li><a href="#">Dummy</a></li>
-    <li><a href="#">Components</a></li>
-    <li><a href="#">Here</a></li>
+    <li><a href="#">CREATE</a></li>
+    <li><a href="#">READ</a></li>
+    <li><a href="#">UPDATE</a></li>
+    <li><a href="#">DELETE</a></li>
+
 </ul>
 
 
-
-    <div class="container" id="createContainer">
+<div class="container" id="createContainer">
 
         <h6><strong>Users</strong></h6>
 
@@ -56,14 +52,14 @@
                             <i class="material-icons prefix">account_circle</i>
 
                             <label for="name">name</label>
-                            <input id="name" type="text" class="validate" name="name">
+                            <input id="name" type="text" class="validate" name="name" required>
                         </div>
                     </div>
 
                     <div class="row center-align">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">email</i>
-                            <input id="email" type="email" class="validate" name="email">
+                            <input id="email" type="email" class="validate" name="email" required>
                             <label for="email">email</label>
                         </div>
                     </div>
@@ -71,7 +67,7 @@
                     <div class="row center-align">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">lock</i>
-                            <input id="password" type="password" class="validate" name="password">
+                            <input id="password" type="password" class="validate" name="password" required>
                             <label for="password">password</label>
                         </div>
                     </div>
@@ -190,8 +186,6 @@
             </li>
         </ul>
         </div>
-
-
 <div class="container" id="readContainer">
     <h6><strong>Users</strong></h6>
 
@@ -250,12 +244,176 @@
     </ul>
 
 </div>
-
 <div class="container" id="updateContainer">
 
+    <h6><strong>Users</strong></h6>
 
+    <ul class="collapsible">
+        <li>
+            <div class="collapsible-header"><i class="material-icons">filter_drama</i>PATCH /users/myprofile</div>
+            <div class="collapsible-body"><span>This HTTP UPDATE request updates myprofile within the Mongodb database. Fill in the details to send a JSON payload to the express.js server</span>
+
+                <form id="updateUserForm">
+
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">account_circle</i>
+
+                            <label for="updateName">name</label>
+                            <input id="updateName" type="text" class="validate" name="updateName" required>
+                        </div>
+                    </div>
+
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">email</i>
+                            <input id="updateEmail" type="email" class="validate" name="udpateEmail" required>
+                            <label for="updateEmail">email</label>
+                        </div>
+                    </div>
+
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">lock</i>
+                            <input id="UpdatePassword" type="password" class="validate" name="updatePassword" required>
+                            <label for="updatePassword">password</label>
+                        </div>
+                    </div>
+
+
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </li>
+        <li><div class="collapsible-header"><i class="material-icons">filter_drama</i>PATCH /users/{id}</div>
+            <div class="collapsible-body"><span>This HTTP PATCH request updates a user by id. Fill in the details to query the mongoDB database to see if the user exists</span>
+                <form id="updateUserByIdForm">
+
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">account_circle</i>
+
+                            <label for="updateUserId">user id</label>
+                            <input id="updateUserId" type="text" class="validate" name="updateUserId" required>
+                        </div>
+                    </div>
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">account_circle</i>
+
+                            <label for="updateUserByIdName">name</label>
+                            <input id="updateUserByIdName" type="text" class="validate" name="updateUserByIdName" required>
+                        </div>
+                    </div>
+
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">email</i>
+                            <input id="updateUserByIdEmail" type="email" class="validate" name="udpateUserByIdEmail" required>
+                            <label for="updateUserByIdEmail">email</label>
+                        </div>
+                    </div>
+
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">lock</i>
+                            <input id="updateUserByIdPassword" type="password" class="validate" name="updateUserByIdPassword" required>
+                            <label for="updateUserByIdPassword">password</label>
+                        </div>
+                    </div>
+
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+    </li>
+        <li><div class="collapsible-header"><i class="material-icons">filter_drama</i>PATCH /users</div>
+            <div class="collapsible-body"><span>This HTTP PATCH request bulk updates all users. Fill in the details to query the mongoDB database to see if the user exists</span>
+                <form id="updateAllUsersForm">
+
+
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">account_circle</i>
+
+                            <label for="updateAllUsersName">name</label>
+                            <input id="updateAllUsersName" type="text" class="validate" name="updateAllUsersName" required>
+                        </div>
+                    </div>
+
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">email</i>
+                            <input id="updateAllUsersEmail" type="email" class="validate" name="updateAllUsersEmail" required>
+                            <label for="updateAllUsersEmail">email</label>
+                        </div>
+                    </div>
+
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </li>
+
+    </ul>
+
+    <h6><strong>Jobs</strong></h6>
+    <ul class="collapsible">
+        <li>
+            <div class="collapsible-header"><i class="material-icons">filter_drama</i>POST /jobs</div>
+            <div class="collapsible-body"><span>This HTTP PATCH request updates a job within the Mongodb database. Fill in the details to send a JSON payload to the express.js server</span>
+
+                <form id="updateJobForm">
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">edit</i>
+                            <input id="updateDescription" type="text" class="validate" name="updateDescription">
+                            <label for="updateDescription">job description</label>
+                        </div>d
+                    </div>
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">done</i>
+                            <input id="updateFinished" type="text" class="validate" name="updateFinished">
+                            <label for="updateFinished">finished?</label>
+                        </div>
+                    </div>
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+
+
+
+            </div>
+        </li>
+    </ul>
 
 </div>
+
+
 <div class="container" id="deleteContainer">
 
 
