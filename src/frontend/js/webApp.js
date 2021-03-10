@@ -45,6 +45,16 @@ class Model {
             body: JSON.stringify(user),
         });
 
+        // const rawResponse = await fetch("http://localhost:3000/users/logout", {
+        //     method: "POST",
+        //     headers: {
+        //         Accept: "application/json",
+        //         "Content-Type": "application/json",
+        //         "Authorization": `Bearer ${localStorage.getItem('token')}`
+        //     }
+        //     // body: JSON.stringify(user),
+        // });
+
         await rawResponse.json().then((data) =>{
             this.onLogoutUserChanged(data)
         });
@@ -110,6 +120,23 @@ class Model {
         });
     }
 
+    async createJob(job){
+
+        const rawResponse = await fetch("http://localhost:3000/jobs", {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify(job),
+        });
+
+        await rawResponse.json().then((data) =>{
+            this.onJobCreatedChanged(data)
+        });
+    }
+
 
 
     // BINDERS
@@ -135,9 +162,9 @@ class Model {
         this.onGetUserByIdChanged = callback
     }
 
-
-
-
+    bindJobCreatedChanged(callback) {
+        this.onJobCreatedChanged = callback
+    }
 }
 
 class View{
@@ -149,7 +176,7 @@ class View{
         this.getMyProfileButton = document.querySelector("#getMyProfileButton");
         this.getUsersButton = document.querySelector("#getUsersButton");
         this.getUserByIdButton = document.querySelector("#getUserByIdButton");
-
+        this.createJobForm = document.querySelector("#createJobForm");
     }
 
     // BINDERS
@@ -226,49 +253,75 @@ class View{
             handler();
         });
     }
+    bindCreateJob(handler) {
+        this.createJobForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            // The FormData object lets you compile a set of key/value pairs to send using XMLHttpRequest.
+            let formData = new FormData(this.createJobForm);
+
+            const job = {
+                description: "",
+                finished: "",
+            };
+
+            for (var [key, value] of formData.entries()) {
+                job[key] = value;
+            }
+            handler(job);
+        });
+    }
+
 
 
     // UPDATE VIEWS
     updateView = (user) =>{
 
         if(user.token){
-            localStorage.setItem('token', user.token);
-            M.toast({html: JSON.stringify(user)})
+            localStorage.setItem('token', user.token)
+            console.log('Successfully Created User', user)
+            M.toast({html: 'Successfully Created User', displayLength: 2500, activationPercent: 0.5, classes: 'green'})
         }
         else{
-            console.log('Could not Create User')
-            M.toast({html: 'Could not Create User'})
+            console.log('Failed to Create User')
+            M.toast({html: 'Failed to Create User!', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
         }
     }
     updateLoginView = (user) =>{
 
         if(user.token){
             localStorage.setItem('token', user.token);
-            M.toast({html: JSON.stringify(user)})
+            console.log('Successfully Logged In...')
+            M.toast({html: 'Successfully Logged In...', displayLength: 2500, activationPercent: 0.5, classes: 'green'})
         }
         else{
-            console.log('Could not login user')
-            M.toast({html: 'Could not login user'})
+            console.log('Login Failed. Please Authenticate!')
+            M.toast({html: 'Login Failed. Please Authenticate!', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
         }
-
-
-
-
-
-
     }
+
     updateLogoutView = (user) =>{
         if(user.error){
-            M.toast({html: 'Error - please authenticate'})
+            console.log('Please Authenticate')
+            M.toast({html: 'Please Authenticate!', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
         }
         else{
-            console.log('Successfull logged out')
-            M.toast({html: 'Sucessfully logged out'})
+            console.log('Successfully logged out')
+            M.toast({html: 'Successfully Logged Out...', displayLength: 2500, activationPercent: 0.5, classes: 'green'})
         }
     }
     updateLogoutAllUserSessionsView = (user) =>{
-        console.log('Button Clicked')
+        if(user.error){
+            console.log('Please Authenticate')
+            M.toast({html: 'Please Authenticate!', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
+
+        }
+        else{
+            console.log('Successfully Logged Out of all Sessions')
+            M.toast({html: 'Successfully Logged Out of all Sessions', displayLength: 2500, activationPercent: 0.5, classes: 'green'})
+        }
     }
+
     updateGetMyProfileView = (user) =>{
         console.log('Button Clicked')
     }
@@ -278,6 +331,16 @@ class View{
     updateGetUserByIdView = (user) =>{
         console.log('Button Clicked')
     }
+    updateCreateJobView = (user) =>{
+        if(user.token){
+            localStorage.setItem('token', user.token);
+            M.toast({html: 'Successfully Created Job...', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
+        }
+        else{
+            M.toast({html: 'Successfully Created Job...', displayLength: 2500, activationPercent: 0.5, classes: 'green'})
+        }
+    }
+
 
 }
 
@@ -308,6 +371,9 @@ class Controller{
 
         this.model.bindGetUserByIdChanged(this.onGetUserByIdChanged)
         this.view.bindGetUserById(this.handleGetUserById)
+
+        this.model.bindJobCreatedChanged(this.onJobCreatedChanged)
+        this.view.bindCreateJob(this.handleCreateJob)
     }
 
     // HANDLERS
@@ -329,8 +395,9 @@ class Controller{
     handleGetUsers = (user) => {
         this.model.getUsers(user)
     }
-    handleGetUserById = (user) => {
-        this.model.getUserById(user)
+
+    handleCreateJob = (user) => {
+        this.model.createJob(user)
     }
 
 
@@ -355,6 +422,9 @@ class Controller{
     }
     onGetUserByIdChanged = (user)=>{
         this.view.updateGetUserByIdView(user)
+    }
+    onJobCreatedChanged = (user)=>{
+        this.view.updateCreateJobView(user)
     }
 
 }

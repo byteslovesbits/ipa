@@ -38,9 +38,8 @@
 
 <div class="container" id="createContainer">
 
-        <h6><strong>Users</strong></h6>
-
-        <ul class="collapsible">
+    <h6><strong>Users</strong></h6>
+    <ul class="collapsible">
         <li>
             <div class="collapsible-header"><i class="material-icons">filter_drama</i>POST /users</div>
             <div class="collapsible-body"><span>This HTTP POST request creates a user within the Mongodb database. Fill in the details to send a JSON payload to the express.js server</span>
@@ -59,7 +58,7 @@
                     <div class="row center-align">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">email</i>
-                            <input id="email" type="email" class="validate" name="email" required>
+                            <input id="email" type="email" class="validate" name="email" autocomplete="email" required>
                             <label for="email">email</label>
                         </div>
                     </div>
@@ -67,7 +66,7 @@
                     <div class="row center-align">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">lock</i>
-                            <input id="password" type="password" class="validate" name="password" required>
+                            <input id="password" type="password" class="validate" name="password" minlength="12" autocomplete="current-password" required>
                             <label for="password">password</label>
                         </div>
                     </div>
@@ -84,12 +83,10 @@
                 </form>
 
 
-
             </div>
         </li>
         <li>
             <div class="collapsible-header"><i class="material-icons">filter_drama</i>POST /user/login</div>
-<!--            <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>-->
             <div class="collapsible-body"><span>This HTTP POST request logins a user. Fill in the details to query the mongoDB database to see if the user exists</span>
 
                 <form id="loginUserForm">
@@ -105,7 +102,7 @@
                     <div class="row center-align">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">lock</i>
-                            <input id="passwordLogin" type="password" class="validate" name="passwordLogin">
+                            <input id="passwordLogin" type="password" class="validate" autocomplete="password-login" name="passwordLogin">
                             <label for="passwordLogin">password</label>
                         </div>
                     </div>
@@ -120,98 +117,28 @@
                     </div>
                 </form>
             </div>
-
-
         </li>
-            <li>
-                <div class="collapsible-header"><i class="material-icons">filter_drama</i>POST /users/logout</div>
-                <div class="collapsible-body"><span>This HTTP POST request logs out a user from a single session</span>
-                    <div class="row center-align">
-                        <div class="input-field col s12">
-                            <button class="btn waves-effect waves-light" id="logoutButton" type="submit" name="action">Logout
-                                <i class="material-icons right">send</i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="collapsible-header"><i class="material-icons">filter_drama</i>POST /users/logoutAll</div>
-                <div class="collapsible-body"><span>This HTTP POST request logs a user out of all sessions. A user may be logged into the service with different devices.</span>
-                    <div class="row center-align">
-                        <div class="input-field col s12">
-                            <button class="btn waves-effect waves-light" id="logoutAllUserSessionsButton" type="submit" name="action">Logout all Sessions
-                                <i class="material-icons right">send</i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </li>
-        </ul>
-
-        <h6><strong>Jobs</strong></h6>
-        <ul class="collapsible">
-            <li>
-                <div class="collapsible-header"><i class="material-icons">filter_drama</i>POST /jobs</div>
-                <div class="collapsible-body"><span>This HTTP POST request creates a job within the Mongodb database. Fill in the details to send a JSON payload to the express.js server</span>
-
-                    <form id="createJobForm">
-                                    <div class="row center-align">
-                            <div class="input-field col s12">
-                                <i class="material-icons prefix">edit</i>
-                                <input id="description" type="text" class="validate" name="description">
-                                <label for="description">job description</label>
-                            </div>
-                        </div>
-                        <div class="row center-align">
-                            <div class="input-field col s12">
-                                <i class="material-icons prefix">done</i>
-                                <input id="finished" type="text" class="validate" name="finished">
-                                <label for="finished">finished?</label>
-                            </div>
-                        </div>
-                        <div class="row center-align">
-                            <div class="input-field col s12">
-                                <button class="btn waves-effect waves-light" type="submit" name="action">Submit
-                                    <i class="material-icons right">send</i>
-                                </button>
-                            </div>
-                        </div>
-
-                    </form>
-
-
-
-                </div>
-            </li>
-        </ul>
-        </div>
-<div class="container" id="readContainer">
-    <h6><strong>Users</strong></h6>
-
-    <ul class="collapsible">
         <li>
-            <div class="collapsible-header"><i class="material-icons">filter_drama</i>GET /myProfile</div>
-            <div class="collapsible-body"><span>This HTTP GET request gets my profile</span>
-
-                    <div class="row center-align">
-                        <div class="input-field col s12">
-                            <button id="getMyProfileButton" class="btn waves-effect waves-light" type="submit" name="action">Submit
-                                <i class="material-icons right">send</i>
-                            </button>
-                        </div>
-                    </div>
-            </div>
-        </li>
-    </ul>
-    <ul class="collapsible">
-        <li>
-            <div class="collapsible-header"><i class="material-icons">filter_drama</i>GET /users</div>
-            <div class="collapsible-body"><span>This HTTP GET request gets all users in the database</span>
+            <div class="collapsible-header"><i class="material-icons">filter_drama</i>POST /users/logout</div>
+            <div class="collapsible-body"><span>This HTTP POST request logs out a user from a single session</span>
 
                 <div class="row center-align">
                     <div class="input-field col s12">
-                        <button id="getUsersButton" class="btn waves-effect waves-light" type="submit" name="action">Submit
+                        <button class="btn waves-effect waves-light" id="logoutButton" type="submit" name="action">
+                            Logout
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">filter_drama</i>POST /users/logoutAll</div>
+            <div class="collapsible-body"><span>This HTTP POST request logs a user out of all sessions. A user may be logged into the service with different devices.</span>
+                <div class="row center-align">
+                    <div class="input-field col s12">
+                        <button class="btn waves-effect waves-light" id="logoutAllUserSessionsButton" type="submit"
+                                name="action">Logout all Sessions
                             <i class="material-icons right">send</i>
                         </button>
                     </div>
@@ -219,10 +146,74 @@
             </div>
         </li>
     </ul>
+
+    <h6><strong>Jobs</strong></h6>
     <ul class="collapsible">
         <li>
+            <div class="collapsible-header"><i class="material-icons">filter_drama</i>POST /jobs</div>
+            <div class="collapsible-body"><span>This HTTP POST request creates a job within the Mongodb database. Fill in the details to send a JSON payload to the express.js server</span>
+
+                <form id="createJobForm">
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">edit</i>
+                            <input id="description" type="text" class="validate" name="description">
+                            <label for="description">job description</label>
+                        </div>
+                    </div>
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">done</i>
+                            <input id="finished" type="text" class="validate" name="finished">
+                            <label for="finished">finished?</label>
+                        </div>
+                    </div>
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="container" id="readContainer">
+    <h6><strong>Users</strong></h6>
+    <ul class="collapsible">
+        <li>
+            <div class="collapsible-header"><i class="material-icons">filter_drama</i>GET /myProfile</div>
+            <div class="collapsible-body"><span>This HTTP GET request gets my profile</span>
+
+                <div class="row center-align">
+                    <div class="input-field col s12">
+                        <button id="getMyProfileButton" class="btn waves-effect waves-light" type="submit"
+                                name="action">Submit
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">filter_drama</i>GET /users</div>
+            <div class="collapsible-body"><span>This HTTP GET request gets all users in the database</span>
+
+                <div class="row center-align">
+                    <div class="input-field col s12">
+                        <button id="getUsersButton" class="btn waves-effect waves-light" type="submit" name="action">
+                            Submit
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
             <div class="collapsible-header"><i class="material-icons">filter_drama</i>GET /users/{id}</div>
-            <div class="collapsible-body"><span>This HTTP GET request gets my a profile by id</span>
+            <div class="collapsible-body"><span>This HTTP GET request gets a profile by id</span>
 
                 <div class="row center-align">
                     <div class="input-field col s12">
@@ -234,7 +225,8 @@
 
                 <div class="row center-align">
                     <div class="input-field col s12">
-                        <button id="getUserByIdButton" class="btn waves-effect waves-light" type="submit" name="action">Submit
+                        <button id="getUserByIdButton" class="btn waves-effect waves-light" type="submit" name="action">
+                            Submit
                             <i class="material-icons right">send</i>
                         </button>
                     </div>
@@ -242,7 +234,47 @@
             </div>
         </li>
     </ul>
+    <h6><strong>Jobs</strong></h6>
+    <ul class="collapsible">
+        <li>
+            <div class="collapsible-header"><i class="material-icons">filter_drama</i>GET /jobs</div>
+            <div class="collapsible-body"><span>This HTTP GET request gets all jobs</span>
 
+                <div class="row center-align">
+                    <div class="input-field col s12">
+                        <button id="getAllJobsButton" class="btn waves-effect waves-light" type="submit"
+                                name="action">Get all Jobs
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">filter_drama</i>GET /jobs/{id}</div>
+            <div class="collapsible-body"><span>This HTTP GET request gets a job by id</span>
+
+                <div class="row center-align">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">edit</i>
+                        <input id="getJobById" type="text" class="validate" name="userId" minlength="12" max="12" maxlength="12">
+                        <label for="getJobById">user id</label>
+                    </div>
+                </div>
+
+                <div class="row center-align">
+                    <div class="input-field col s12">
+                        <button id="getJobByIdButton" class="btn waves-effect waves-light" type="submit" name="action">
+                            Get Job By Id
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </li>
+
+
+    </ul>
 </div>
 <div class="container" id="updateContainer">
 
@@ -275,7 +307,7 @@
                     <div class="row center-align">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">lock</i>
-                            <input id="UpdatePassword" type="password" class="validate" name="updatePassword" required>
+                            <input id="updatePassword" type="password" class="validate" name="updatePassword" autocomplete="update-password" required>
                             <label for="updatePassword">password</label>
                         </div>
                     </div>
@@ -292,7 +324,8 @@
                 </form>
             </div>
         </li>
-        <li><div class="collapsible-header"><i class="material-icons">filter_drama</i>PATCH /users/{id}</div>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">filter_drama</i>PATCH /users/{id}</div>
             <div class="collapsible-body"><span>This HTTP PATCH request updates a user by id. Fill in the details to query the mongoDB database to see if the user exists</span>
                 <form id="updateUserByIdForm">
 
@@ -309,14 +342,16 @@
                             <i class="material-icons prefix">account_circle</i>
 
                             <label for="updateUserByIdName">name</label>
-                            <input id="updateUserByIdName" type="text" class="validate" name="updateUserByIdName" required>
+                            <input id="updateUserByIdName" type="text" class="validate" name="updateUserByIdName"
+                                   required>
                         </div>
                     </div>
 
                     <div class="row center-align">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">email</i>
-                            <input id="updateUserByIdEmail" type="email" class="validate" name="udpateUserByIdEmail" required>
+                            <input id="updateUserByIdEmail" type="email" class="validate" name="udpateUserByIdEmail"
+                                   required>
                             <label for="updateUserByIdEmail">email</label>
                         </div>
                     </div>
@@ -324,7 +359,8 @@
                     <div class="row center-align">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">lock</i>
-                            <input id="updateUserByIdPassword" type="password" class="validate" name="updateUserByIdPassword" required>
+                            <input id="updateUserByIdPassword" type="password" class="validate"
+                                   name="updateUserByIdPassword" autocomplete="update-user-by-id-password" required>
                             <label for="updateUserByIdPassword">password</label>
                         </div>
                     </div>
@@ -338,8 +374,9 @@
                     </div>
                 </form>
             </div>
-    </li>
-        <li><div class="collapsible-header"><i class="material-icons">filter_drama</i>PATCH /users</div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">filter_drama</i>PATCH /users</div>
             <div class="collapsible-body"><span>This HTTP PATCH request bulk updates all users. Fill in the details to query the mongoDB database to see if the user exists</span>
                 <form id="updateAllUsersForm">
 
@@ -349,15 +386,26 @@
                             <i class="material-icons prefix">account_circle</i>
 
                             <label for="updateAllUsersName">name</label>
-                            <input id="updateAllUsersName" type="text" class="validate" name="updateAllUsersName" required>
+                            <input id="updateAllUsersName" type="text" class="validate" name="updateAllUsersName"
+                                   required>
                         </div>
                     </div>
 
                     <div class="row center-align">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">email</i>
-                            <input id="updateAllUsersEmail" type="email" class="validate" name="updateAllUsersEmail" required>
+                            <input id="updateAllUsersEmail" type="email" class="validate" name="updateAllUsersEmail"
+                                   required>
                             <label for="updateAllUsersEmail">email</label>
+                        </div>
+                    </div>
+
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">lock</i>
+                            <input id="updateUserByPassword" type="password"  autocomplete="update-user-by-password" class="validate"
+                                   name="updateUserByIdPassword" required>
+                            <label for="updateUserByIdPassword">password</label>
                         </div>
                     </div>
 
@@ -377,16 +425,95 @@
     <h6><strong>Jobs</strong></h6>
     <ul class="collapsible">
         <li>
-            <div class="collapsible-header"><i class="material-icons">filter_drama</i>POST /jobs</div>
+            <div class="collapsible-header"><i class="material-icons">filter_drama</i>PATCH /jobs</div>
             <div class="collapsible-body"><span>This HTTP PATCH request updates a job within the Mongodb database. Fill in the details to send a JSON payload to the express.js server</span>
-
                 <form id="updateJobForm">
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">edit</i>
+                            <input id="updateJobDescription" type="text" class="validate" name="updateJobDescription">
+                            <label for="updateJobDescription">job description</label>
+                        </div>
+                    </div>
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">done</i>
+                            <input id="updateJobFinished" type="text" class="validate" name="updateJobFinished">
+                            <label for="updateJobFinished">finished?</label>
+                        </div>
+                    </div>
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </li>
+    </ul>
+
+</div>
+<div class="container" id="deleteContainer">
+    <h6><strong>Users</strong></h6>
+
+    <ul class="collapsible">
+        <li>
+            <div class="collapsible-header"><i class="material-icons">filter_drama</i>DELETE /users</div>
+            <div class="collapsible-body">
+                <span>This HTTP DELETE request deletes all users within the Mongodb database.</span>
+
+                <form id="deleteAllUsersForm">
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                                <i class="material-icons right">Delete all Users</i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">filter_drama</i>DELETE /users/{id}</div>
+            <div class="collapsible-body"><span>This HTTP PATCH request updates a user by id. Fill in the details to query the mongoDB database to see if the user exists</span>
+                <form id="deleteUserByIdForm">
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">account_circle</i>
+
+                            <label for="updateUserId">user id</label>
+                            <input id="deleteUserId" type="text" class="validate" name="deleteUserId" required>
+                        </div>
+                    </div>
+                    <div class="row center-align">
+                        <div class="input-field col s12">
+                            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </li>
+    </ul>
+
+    <h6><strong>Jobs</strong></h6>
+    <ul class="collapsible">
+        <li>
+            <div class="collapsible-header"><i class="material-icons">filter_drama</i>DELETE /jobs</div>
+            <div class="collapsible-body"><span>This HTTP DELETE request deletes a job by id within the Mongodb database.</span>
+
+                <form id="deleteJobForm">
                     <div class="row center-align">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">edit</i>
                             <input id="updateDescription" type="text" class="validate" name="updateDescription">
                             <label for="updateDescription">job description</label>
-                        </div>d
+                        </div>
+                        d
                     </div>
                     <div class="row center-align">
                         <div class="input-field col s12">
@@ -406,21 +533,11 @@
                 </form>
 
 
-
             </div>
         </li>
     </ul>
-
 </div>
 
-
-<div class="container" id="deleteContainer">
-
-
-
-</div>
-
-</div>
 
 </body>
 

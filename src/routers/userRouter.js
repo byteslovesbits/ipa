@@ -57,7 +57,8 @@ userRouter.post("/users/logout", authenticateUser, async (request, response) => 
       try {
         await request.user.save();
       _200("Successfully logged out user", request.user)
-        response.sendStatus(200);
+        // response.sendStatus(200);
+          response.send(request.user)
 
       } catch (error) {
           _400(error)
@@ -74,7 +75,7 @@ userRouter.post("/users/logoutall", authenticateUser, async (request, response) 
       request.user.tokens = [];
       await request.user.save();
         _200('Successfully logged out of all sessions')
-        response.sendStatus(200);
+        response.send(request.user);
     } catch (error) {
         _500(error)
       response.status(500).send(error);

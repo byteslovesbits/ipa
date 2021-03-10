@@ -133,7 +133,7 @@ userSchema.statics.findUser = async (email, password) => {
   const isUserPasswordCorrect = await bcrypt.compare(password, user.password);
 
   if (!isUserPasswordCorrect) {
-    throw new Error("Unable to login");
+    throw new Error("Login Failed. Please Authenticate!");
   }
 
   return user;
