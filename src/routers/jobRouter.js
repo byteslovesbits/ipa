@@ -32,7 +32,7 @@ jobRouter.get('/jobs/:id', authenticateUser, async (request,response)=>{
         const job = await Job.findOne({_id: request.params.id, createdBy: request.user._id})
         if(!job){
             _404()
-            return response.sendStatus(404)
+            return response.status(404).send({})
         }
         _201(job)
         response.send(job)

@@ -213,12 +213,12 @@
         </li>
         <li>
             <div class="collapsible-header"><i class="material-icons">filter_drama</i>GET /users/{id}</div>
-            <div class="collapsible-body"><span>This HTTP GET request gets a profile by id</span>
+            <div class="collapsible-body"><span>This HTTP GET request gets a user by id</span>
 
                 <div class="row center-align">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">edit</i>
-                        <input id="userId" type="text" class="validate" name="userId" max="12" maxlength="12">
+                        <input id="userId" type="text" class="validate" name="userId" minlength="24" maxlength="24">
                         <label for="userId">user id</label>
                     </div>
                 </div>
@@ -257,7 +257,7 @@
                 <div class="row center-align">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">edit</i>
-                        <input id="getJobById" type="text" class="validate" name="userId" minlength="12" max="12" maxlength="12">
+                        <input id="getJobById" type="text" class="validate" name="userId">
                         <label for="getJobById">user id</label>
                     </div>
                 </div>
@@ -404,8 +404,8 @@
                         <div class="input-field col s12">
                             <i class="material-icons prefix">lock</i>
                             <input id="updateUserByPassword" type="password"  autocomplete="update-user-by-password" class="validate"
-                                   name="updateUserByIdPassword" required>
-                            <label for="updateUserByIdPassword">password</label>
+                                   name="updateUserByPassword" required>
+                            <label for="updateUserByPassword">password</label>
                         </div>
                     </div>
 
@@ -484,7 +484,7 @@
                         <div class="input-field col s12">
                             <i class="material-icons prefix">account_circle</i>
 
-                            <label for="updateUserId">user id</label>
+                            <label for="deleteUserId">user id</label>
                             <input id="deleteUserId" type="text" class="validate" name="deleteUserId" required>
                         </div>
                     </div>
@@ -538,8 +538,6 @@
     </ul>
 </div>
 
-
-</body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="js/webApp.js"></script>

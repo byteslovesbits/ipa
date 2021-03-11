@@ -1,4 +1,5 @@
 M.AutoInit();
+//w$alX()x!£mk014c3550
 
 class Model {
     constructor() {
@@ -104,22 +105,6 @@ class Model {
             this.onGetUsersChanged(data)
         });
     }
-    async getUserById(user){
-        const rawResponse = await fetch("http://localhost:3000/users", {
-            method: "GET",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${localStorage.getItem('token')}`
-            },
-            body: JSON.stringify(user),
-        });
-
-        await rawResponse.json().then((data) =>{
-            this.onGetUserByIdChanged(data)
-        });
-    }
-
     async createJob(job){
 
         const rawResponse = await fetch("http://localhost:3000/jobs", {
@@ -136,6 +121,53 @@ class Model {
             this.onJobCreatedChanged(data)
         });
     }
+    async getUserById(id){
+        const rawResponse = await fetch(`http://localhost:3000/users/${id}`, {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`,
+            }
+        });
+
+        await rawResponse.json().then((data) =>{
+            this.onGetUserByIdChanged(data)
+        });
+    }
+    async getJobById(id){
+        const rawResponse = await fetch(`http://localhost:3000/jobs/${id}`, {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`,
+            }
+        });
+
+        await rawResponse.json().then((data) =>{
+            this.onGetJobByIdChanged(data)
+        });
+    }
+
+    async getJobs(jobs){
+        const rawResponse = await fetch("http://localhost:3000/jobs", {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            },
+        });
+
+        await rawResponse.json().then((data) =>{
+            this.onGetJobsChanged(data)
+        });
+    }
+
+
+
+
 
 
 
@@ -161,10 +193,17 @@ class Model {
     bindGetUserByIdChanged(callback) {
         this.onGetUserByIdChanged = callback
     }
-
     bindJobCreatedChanged(callback) {
         this.onJobCreatedChanged = callback
     }
+    bindGetJobByIdChanged(callback) {
+        this.onGetJobByIdChanged = callback
+    }
+    bindGetJobsChanged(callback) {
+        this.onGetJobsChanged = callback
+    }
+
+
 }
 
 class View{
@@ -176,7 +215,11 @@ class View{
         this.getMyProfileButton = document.querySelector("#getMyProfileButton");
         this.getUsersButton = document.querySelector("#getUsersButton");
         this.getUserByIdButton = document.querySelector("#getUserByIdButton");
+        this.getJobByIdButton = document.querySelector("#getJobByIdButton");
         this.createJobForm = document.querySelector("#createJobForm");
+        this.getJobById = document.querySelector("#getJobById")
+        this.getAllJobsButton = document.querySelector('#getAllJobsButton')
+        this.userId = document.querySelector('#userId')
     }
 
     // BINDERS
@@ -250,7 +293,7 @@ class View{
     bindGetUserById(handler) {
         this.getUserByIdButton.addEventListener("click", async (event) => {
             event.preventDefault();
-            handler();
+            handler(this.userId.value);
         });
     }
     bindCreateJob(handler) {
@@ -271,6 +314,20 @@ class View{
             handler(job);
         });
     }
+    bindGetJobById(handler) {
+        this.getJobByIdButton.addEventListener("click", async (event) => {
+            event.preventDefault();
+            handler(this.getJobById.value);
+        });
+    }
+    bindGetJobs(handler) {
+        this.getAllJobsButton.addEventListener("click", async (event) => {
+            event.preventDefault();
+            handler();
+        });
+    }
+
+
 
 
 
@@ -321,25 +378,62 @@ class View{
             M.toast({html: 'Successfully Logged Out of all Sessions', displayLength: 2500, activationPercent: 0.5, classes: 'green'})
         }
     }
-
     updateGetMyProfileView = (user) =>{
-        console.log('Button Clicked')
-    }
-    updateGetUsersView = (user) =>{
-        console.log('Button Clicked')
-    }
-    updateGetUserByIdView = (user) =>{
-        console.log('Button Clicked')
-    }
-    updateCreateJobView = (user) =>{
-        if(user.token){
-            localStorage.setItem('token', user.token);
-            M.toast({html: 'Successfully Created Job...', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
+
+        if(user._id){
+            // localStorage.setItem('token', user.token);
+            M.toast({html: JSON.stringify(user), displayLength: 10000, activationPercent: 0.5, classes: 'green'})
         }
         else{
-            M.toast({html: 'Successfully Created Job...', displayLength: 2500, activationPercent: 0.5, classes: 'green'})
+            M.toast({html: 'Could not get users!', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
         }
     }
+
+    updateGetUsersView = (users) =>{
+        if(users[0]){
+            // localStorage.setItem('token', user.token);
+            M.toast({html: JSON.stringify(users), displayLength: 5000, activationPercent: 0.5, classes: 'green'})
+        }
+        else{
+            M.toast({html: 'Could not get user profile!', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
+        }
+    }
+    updateGetUserByIdView = (user) =>{
+        if(user._id){
+            M.toast({html: JSON.stringify(user), displayLength: 5000, activationPercent: 0.5, classes: 'green'})
+        }
+        else{
+            M.toast({html: 'Could not get user!', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
+        }
+    }
+    updateCreateJobView = (job) =>{
+        if(job._id){
+            // localStorage.setItem('token', user.token);
+            M.toast({html: 'Created job...', displayLength: 2500, activationPercent: 0.5, classes: 'green'})
+        }
+        else{
+            M.toast({html: 'Failed to create job...', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
+        }
+    }
+    updateGetJobByIdView = (job) =>{
+        if(job._id){
+            M.toast({html: JSON.stringify(job), displayLength: 5000, activationPercent: 0.5, classes: 'green'})
+        }
+        else{
+            M.toast({html: 'Could not get user!', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
+        }
+    }
+    updateGetJobsView = (jobs) =>{
+        console.log('Hi there')
+        if(jobs[0]){
+            M.toast({html: JSON.stringify(jobs), displayLength: 5000, activationPercent: 0.5, classes: 'green'})
+        }
+        else{
+            M.toast({html: 'Could not get jobs!', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
+        }
+    }
+
+
 
 
 }
@@ -374,6 +468,12 @@ class Controller{
 
         this.model.bindJobCreatedChanged(this.onJobCreatedChanged)
         this.view.bindCreateJob(this.handleCreateJob)
+
+        this.model.bindGetJobByIdChanged(this.onGetJobByIdChanged)
+        this.view.bindGetJobById(this.handleGetJobById)
+
+        this.model.bindGetJobsChanged(this.onGetJobsChanged)
+        this.view.bindGetJobs(this.handleGetJobs)
     }
 
     // HANDLERS
@@ -395,9 +495,20 @@ class Controller{
     handleGetUsers = (user) => {
         this.model.getUsers(user)
     }
+    handleGetUserById = (id) =>{
+        this.model.getUserById(id)
+    }
+    handleGetJobById = (id) =>{
+        this.model.getJobById(id)
+    }
+    handleGetJobs = (jobs) => {
+        this.model.getJobs(jobs)
+    }
 
-    handleCreateJob = (user) => {
-        this.model.createJob(user)
+
+
+    handleCreateJob = (job) => {
+        this.model.createJob(job)
     }
 
 
@@ -423,9 +534,17 @@ class Controller{
     onGetUserByIdChanged = (user)=>{
         this.view.updateGetUserByIdView(user)
     }
-    onJobCreatedChanged = (user)=>{
-        this.view.updateCreateJobView(user)
+    onJobCreatedChanged = (job)=>{
+        this.view.updateCreateJobView(job)
     }
+    onGetJobByIdChanged = (user)=>{
+        this.view.updateGetJobByIdView(user)
+    }
+    onGetJobsChanged = (job)=>{
+        this.view.updateGetJobsView(job)
+    }
+
+
 
 }
 const app = new Controller(new Model(), new View())

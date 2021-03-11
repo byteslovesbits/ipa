@@ -23,7 +23,7 @@ userRouter.post("/users", async (request, response) => {
           delete User.password
           delete User.tokens
 
-          _201('User Saved to database')
+          _201(`_id: ${User._id}`)
           response.set({"uri": '/users'})
           response.set({'token': token })
           response.status(201).send({ User, token: token });
@@ -41,7 +41,7 @@ userRouter.post("/users", async (request, response) => {
 userRouter.post("/users/login", async (request, response) => {
   try {
     const user = await User.findUser(request.body.email, request.body.password);
-    _200("Successfully logged in user")
+    _200(`Logged-in _id: ${user._id}`)
     response.send({ user, token: await user.makeJWT() });
   } catch (error) {
       _400(error)
@@ -56,8 +56,7 @@ userRouter.post("/users/logout", authenticateUser, async (request, response) => 
 
       try {
         await request.user.save();
-      _200("Successfully logged out user", request.user)
-        // response.sendStatus(200);
+      _200(`Logged-out _id: ${request.user._id}`)
           response.send(request.user)
 
       } catch (error) {
@@ -74,7 +73,7 @@ userRouter.post("/users/logoutall", authenticateUser, async (request, response) 
     try {
       request.user.tokens = [];
       await request.user.save();
-        _200('Successfully logged out of all sessions')
+        _200('Logged out of all sessions')
         response.send(request.user);
     } catch (error) {
         _500(error)
@@ -94,7 +93,7 @@ userRouter.get("/users", authenticateUser, async (request,response)=>{
     try{
         if(!users){
             return response.sendStatus(404)
-            throw new Error('No users found')
+            // throw new Error('No users found')
         }
 
     }catch(error){
@@ -107,7 +106,7 @@ userRouter.get("/users/:id", async (request,response)=>{
 
         const user = await User.findById(request.params.id)
         if(!user){
-            return response.status(404).send('No user found')
+            return response.status(404).send({})
         }
         response.send(user)
     }catch(error){
