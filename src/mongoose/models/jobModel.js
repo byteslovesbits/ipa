@@ -31,7 +31,7 @@ const jobSchema = new mongoose.Schema(
 
   },
   {
-    timestamps: { createdAt: "created@", updatedAt: "updated@" },
+    timestamps: true,
   }
 );
 

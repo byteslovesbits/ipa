@@ -121,7 +121,16 @@ userRouter.patch("/users/myProfile", authenticateUser, async (request, response)
 
     await updatedUser.save().then((user) => {
         try {
+            // Lockdown what is returned to the user-agent. Do not allow an attacker to have
+            // access to the tokens array data or the hashed user password!
+            const User = user.toObject()
+            delete User.password
+            delete User.tokens
             _200("Successfully updated user")
+            user.toObject()
+            delete user.password
+            delete user.tokens
+            response.send({User, token: user.token})
         } catch (error) {
             _500(error)
         }
@@ -146,7 +155,14 @@ userRouter.delete("/users/myProfile", authenticateUser, async (request, response
     }
   });
 userRouter.delete("/users", authenticateUser, async (request, response) => {
-    // TODO
+    try{
+        await User.deleteMany({})
+        _200('All users deleted')
+        response.send({success: 'All users deleted'})
+    }catch(error){
+        response.send({failure: error})
+        console.log(error)
+    }
 });
 
 

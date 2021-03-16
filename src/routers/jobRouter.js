@@ -9,7 +9,7 @@ const jobRouter = new express.Router();
 jobRouter.post("/jobs", authenticateUser, async (request, response) => {
   const job = new Job({
     description: request.body.description,
-    finished: request.body.finished,
+    finished: request.body.finished === 'on'? true: false,
       createdBy: request.user._id,
       notes: request.body.notes
   });
@@ -42,6 +42,33 @@ jobRouter.get('/jobs/:id', authenticateUser, async (request,response)=>{
     }
 })
 jobRouter.get('/jobs', authenticateUser, async (request,response)=>{
+
+
+
+    const finished = request.query.finished
+
+
+    const limit = request.query.limit ? parseInt(request.query.limit) : 3
+    const skip = request.query.skip ? parseInt(request.query.skip) : 2
+    const sortBy = request.query.sortBy
+
+    if(finished){
+        const jobs = await Job.find({createdBy: request.user._id, finished: finished}).limit(limit).skip(skip).sort({createdAt: 1})
+        return response.send(jobs)
+    }
+
+    if(sortBy){
+
+        const sortByWhat = sortBy.split(':')[0]
+        const value = sortBy.split(':')[1] === 'asc' ? 1: -1
+
+        if(sortByWhat === 'createdAt'){
+            const jobs = await Job.find({createdBy: request.user._id}).sort({createdAt: value})
+            return response.send(jobs)
+        }
+    }
+
+
 try{
     const jobs = await Job.find({createdBy: request.user._id})
     _200(jobs)
@@ -106,14 +133,15 @@ jobRouter.delete('/jobs/:id', authenticateUser, async (request,response)=>{
 })
 jobRouter.delete('/jobs', authenticateUser, async (request,response)=>{
     try{
-        const job = await Job.findOne({_id: request.params.id, createdBy: request.user.createdBy})
-        if(!job){
-            _404('No Job Found')
-            response.sendStatus(404)
+        const job = await Job.deleteMany({})
+        if(job.n === 0){
+            return response.status(404).send({error: 'No jobs to delete'})
         }
+        _200('All jobs deleted')
+        response.send({success: 'All jobs deleted'})
     }catch(error){
-        _500(error)
-        response.sendStatus(500)
+        response.send({failure: error})
+        console.log(error)
     }
 })
 

@@ -107,13 +107,11 @@ userSchema.methods.validateUpdates = function (updates, request, response){
 
     try {
         requestedUpdates.forEach((update) => (request.user[update] = request.body[update]));
-        response.status(201).send(request.user);
-        console.log(chalk.black.bgGreen("Updates applied successfully"));
+
 
     } catch (error) {
         console.log(chalk.black.bgRed("Could not apply updates"));
         console.log(error)
-        response.status(400).send(error);
     }
 
     return request.user

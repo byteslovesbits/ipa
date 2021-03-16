@@ -45,7 +45,6 @@
             <div class="collapsible-body"><span>This HTTP POST request creates a user within the Mongodb database. Fill in the details to send a JSON payload to the express.js server</span>
 
                 <form id="createUserForm">
-
                     <div class="row center-align">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">account_circle</i>
@@ -66,7 +65,8 @@
                     <div class="row center-align">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">lock</i>
-                            <input id="password" type="password" class="validate" name="password" minlength="12" autocomplete="current-password" required>
+                            <input id="password" type="password" class="validate" name="password" minlength="12"
+                                   autocomplete="current-password" required>
                             <label for="password">password</label>
                         </div>
                     </div>
@@ -102,7 +102,8 @@
                     <div class="row center-align">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">lock</i>
-                            <input id="passwordLogin" type="password" class="validate" autocomplete="password-login" name="passwordLogin">
+                            <input id="passwordLogin" type="password" class="validate" autocomplete="password-login"
+                                   name="passwordLogin">
                             <label for="passwordLogin">password</label>
                         </div>
                     </div>
@@ -161,11 +162,19 @@
                             <label for="description">job description</label>
                         </div>
                     </div>
+                    <!--                    <div class="row center-align">-->
+                    <!--                        <div class="input-field col s12">-->
+                    <!--                            <i class="material-icons prefix">done</i>-->
+                    <!--                            <input id="finished" type="checkbox" name="finished">-->
+                    <!--                            <label for="finished">finished?</label>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
                     <div class="row center-align">
                         <div class="input-field col s12">
-                            <i class="material-icons prefix">done</i>
-                            <input id="finished" type="text" class="validate" name="finished">
-                            <label for="finished">finished?</label>
+                            <label>
+                                <input type="checkbox" id="finished" name="finished"/>
+                                <span>Job Finished?</span>
+                            </label>
                         </div>
                     </div>
                     <div class="row center-align">
@@ -257,8 +266,8 @@
                 <div class="row center-align">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">edit</i>
-                        <input id="getJobById" type="text" class="validate" name="userId">
-                        <label for="getJobById">user id</label>
+                        <input id="getJobById" type="text" class="validate" name="getJobById" minlength="24" required>
+                        <label for="getJobById">job id</label>
                     </div>
                 </div>
 
@@ -292,14 +301,14 @@
                             <i class="material-icons prefix">account_circle</i>
 
                             <label for="updateName">name</label>
-                            <input id="updateName" type="text" class="validate" name="updateName" required>
+                            <input id="updateName" type="text" class="validate" name="updateName">
                         </div>
                     </div>
 
                     <div class="row center-align">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">email</i>
-                            <input id="updateEmail" type="email" class="validate" name="udpateEmail" required>
+                            <input id="updateEmail" type="email" class="validate" name="updateEmail">
                             <label for="updateEmail">email</label>
                         </div>
                     </div>
@@ -307,11 +316,11 @@
                     <div class="row center-align">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">lock</i>
-                            <input id="updatePassword" type="password" class="validate" name="updatePassword" autocomplete="update-password" required>
+                            <input id="updatePassword" type="password" class="validate" name="updatePassword"
+                                   autocomplete="update-password">
                             <label for="updatePassword">password</label>
                         </div>
                     </div>
-
 
                     <div class="row center-align">
                         <div class="input-field col s12">
@@ -403,7 +412,8 @@
                     <div class="row center-align">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">lock</i>
-                            <input id="updateUserByPassword" type="password"  autocomplete="update-user-by-password" class="validate"
+                            <input id="updateUserByPassword" type="password" autocomplete="update-user-by-password"
+                                   class="validate"
                                    name="updateUserByPassword" required>
                             <label for="updateUserByPassword">password</label>
                         </div>
@@ -464,16 +474,14 @@
             <div class="collapsible-header"><i class="material-icons">filter_drama</i>DELETE /users</div>
             <div class="collapsible-body">
                 <span>This HTTP DELETE request deletes all users within the Mongodb database.</span>
-
-                <form id="deleteAllUsersForm">
-                    <div class="row center-align">
-                        <div class="input-field col s12">
-                            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
-                                <i class="material-icons right">Delete all Users</i>
-                            </button>
-                        </div>
+                <div class="row center-align">
+                    <div class="input-field col s12">
+                        <button class="btn waves-effect waves-light" type="submit" name="action"
+                                id="deleteAllUsersButton">Delete All Users
+                            <i class="material-icons right"></i>
+                        </button>
                     </div>
-                </form>
+                </div>
             </div>
         </li>
         <li>
@@ -504,34 +512,17 @@
     <ul class="collapsible">
         <li>
             <div class="collapsible-header"><i class="material-icons">filter_drama</i>DELETE /jobs</div>
-            <div class="collapsible-body"><span>This HTTP DELETE request deletes a job by id within the Mongodb database.</span>
+            <div class="collapsible-body">
 
-                <form id="deleteJobForm">
-                    <div class="row center-align">
-                        <div class="input-field col s12">
-                            <i class="material-icons prefix">edit</i>
-                            <input id="updateDescription" type="text" class="validate" name="updateDescription">
-                            <label for="updateDescription">job description</label>
-                        </div>
-                        d
+                <span>This HTTP DELETE request deletes all jobs within the Mongodb database.</span>
+                <div class="row center-align">
+                    <div class="input-field col s12">
+                        <button class="btn waves-effect waves-light" type="submit" name="action"
+                                id="deleteAllJobsButton">Delete Jobs
+                            <i class="material-icons right"></i>
+                        </button>
                     </div>
-                    <div class="row center-align">
-                        <div class="input-field col s12">
-                            <i class="material-icons prefix">done</i>
-                            <input id="updateFinished" type="text" class="validate" name="updateFinished">
-                            <label for="updateFinished">finished?</label>
-                        </div>
-                    </div>
-                    <div class="row center-align">
-                        <div class="input-field col s12">
-                            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
-                                <i class="material-icons right">send</i>
-                            </button>
-                        </div>
-                    </div>
-
-                </form>
-
+                </div>
 
             </div>
         </li>

@@ -2,6 +2,7 @@ M.AutoInit();
 //w$alX()x!£mk014c3550
 
 class Model {
+
     constructor() {
     }
 
@@ -149,7 +150,6 @@ class Model {
             this.onGetJobByIdChanged(data)
         });
     }
-
     async getJobs(jobs){
         const rawResponse = await fetch("http://localhost:3000/jobs", {
             method: "GET",
@@ -164,12 +164,51 @@ class Model {
             this.onGetJobsChanged(data)
         });
     }
+    async updateMyProfile(user){
+        const rawResponse = await fetch("http://localhost:3000/users/myprofile", {
+            method: "PATCH",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify(user),
+        });
 
+        await rawResponse.json().then((data) =>{
+            this.onUpdateMyProfileChanged(data)
+        });
+    }
+    async deleteAllUsers(users){
 
+        const rawResponse = await fetch("http://localhost:3000/users", {
+            method: "DELETE",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            }
+        });
 
+        await rawResponse.json().then((data) =>{
+            this.onDeleteAllUsersChanged(data)
+        });
+    }
+    async deleteAllJobs(users){
 
+        const rawResponse = await fetch("http://localhost:3000/jobs", {
+            method: "DELETE",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            }
+        });
 
-
+        await rawResponse.json().then((data) =>{
+            this.onDeleteAllJobsChanged(data)
+        });
+    }
 
     // BINDERS
     bindUserCreatedChanged(callback) {
@@ -202,15 +241,25 @@ class Model {
     bindGetJobsChanged(callback) {
         this.onGetJobsChanged = callback
     }
-
-
+    bindUpdateMyProfileChanged(callback) {
+        this.onUpdateMyProfileChanged = callback
+    }
+    bindDeleteAllUsersChanged(callback) {
+        this.onDeleteAllUsersChanged = callback
+    }
+    bindDeleteAllJobsChanged(callback) {
+        this.onDeleteAllJobsChanged = callback
+    }
 }
 
 class View{
     constructor() {
         this.createUserForm = document.querySelector("#createUserForm");
         this.loginUserForm = document.querySelector("#loginUserForm");
+        this.updateUserForm = document.querySelector("#updateUserForm");
         this.logoutButton = document.querySelector("#logoutButton");
+        this.deleteAllUsersButton = document.querySelector("#deleteAllUsersButton");
+        this.deleteAllJobsButton = document.querySelector('#deleteAllJobsButton')
         this.logoutAllUserSessionsButton = document.querySelector("#logoutAllUserSessionsButton");
         this.getMyProfileButton = document.querySelector("#getMyProfileButton");
         this.getUsersButton = document.querySelector("#getUsersButton");
@@ -219,6 +268,7 @@ class View{
         this.createJobForm = document.querySelector("#createJobForm");
         this.getJobById = document.querySelector("#getJobById")
         this.getAllJobsButton = document.querySelector('#getAllJobsButton')
+        this.userId = document.querySelector('#userId')
         this.userId = document.querySelector('#userId')
     }
 
@@ -326,10 +376,54 @@ class View{
             handler();
         });
     }
+    bindUpdateMyProfile(handler) {
+        this.updateUserForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
 
+            // The FormData object lets you compile a set of key/value pairs to send using XMLHttpRequest.
+            let formData = new FormData(this.updateUserForm);
 
+            const user = {
+                name: "",
+                email: "",
+                password: "",
+            };
 
+            for (var [key, value] of formData.entries()) {
 
+                if(key === 'updateName'){
+                    user.name = value
+
+                }
+                else if (key === 'updateEmail'){
+                    user.email = value
+                }
+                else if (key === 'updatePassword'){
+                    user.password = value
+                }
+            }
+
+            for (const [key, value] of Object.entries(user)) {
+                if(value === '')
+                {
+                    delete user[key]
+                }
+            }
+            handler(user);
+        });
+    }
+    bindDeleteAllUsers(handler) {
+        this.deleteAllUsersButton.addEventListener("click", async (event) => {
+            event.preventDefault();
+            handler();
+        });
+    }
+    bindDeleteAllJobs(handler) {
+        this.deleteAllJobsButton.addEventListener("click", async (event) => {
+            event.preventDefault();
+            handler();
+        });
+    }
 
     // UPDATE VIEWS
     updateView = (user) =>{
@@ -356,7 +450,6 @@ class View{
             M.toast({html: 'Login Failed. Please Authenticate!', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
         }
     }
-
     updateLogoutView = (user) =>{
         if(user.error){
             console.log('Please Authenticate')
@@ -385,17 +478,16 @@ class View{
             M.toast({html: JSON.stringify(user), displayLength: 10000, activationPercent: 0.5, classes: 'green'})
         }
         else{
-            M.toast({html: 'Could not get users!', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
+            M.toast({html: 'Could not get profile', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
         }
     }
-
     updateGetUsersView = (users) =>{
         if(users[0]){
             // localStorage.setItem('token', user.token);
             M.toast({html: JSON.stringify(users), displayLength: 5000, activationPercent: 0.5, classes: 'green'})
         }
         else{
-            M.toast({html: 'Could not get user profile!', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
+            M.toast({html: 'Could not get users!', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
         }
     }
     updateGetUserByIdView = (user) =>{
@@ -403,7 +495,7 @@ class View{
             M.toast({html: JSON.stringify(user), displayLength: 5000, activationPercent: 0.5, classes: 'green'})
         }
         else{
-            M.toast({html: 'Could not get user!', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
+            M.toast({html: 'Could not get user by id!', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
         }
     }
     updateCreateJobView = (job) =>{
@@ -420,11 +512,10 @@ class View{
             M.toast({html: JSON.stringify(job), displayLength: 5000, activationPercent: 0.5, classes: 'green'})
         }
         else{
-            M.toast({html: 'Could not get user!', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
+            M.toast({html: 'Could not get job by id!', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
         }
     }
     updateGetJobsView = (jobs) =>{
-        console.log('Hi there')
         if(jobs[0]){
             M.toast({html: JSON.stringify(jobs), displayLength: 5000, activationPercent: 0.5, classes: 'green'})
         }
@@ -432,10 +523,36 @@ class View{
             M.toast({html: 'Could not get jobs!', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
         }
     }
-
-
-
-
+    updateUpdateMyProfileView = (user) =>{
+        if(user.User._id){
+            console.log('Successfully Updated User', user)
+            M.toast({html: 'Successfully Updated User', displayLength: 2500, activationPercent: 0.5, classes: 'green'})
+        }
+        else{
+            console.log('Failed to Update User')
+            M.toast({html: 'Failed to Update User!', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
+        }
+    }
+    updateDeleteAllUsersView = (message) =>{
+        if(message.success){
+            console.log('Successfully Deleted All Users')
+            M.toast({html: 'Successfully Deleted Users', displayLength: 2500, activationPercent: 0.5, classes: 'green'})
+        }
+        else{
+            console.log('Failed to Delete Users!')
+            M.toast({html: 'Failed to Delete Users!', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
+        }
+    }
+    updateDeleteAllJobsView = (message) =>{
+        if(message.success){
+            console.log('Successfully Deleted Jobs')
+            M.toast({html: 'Successfully Deleted Jobs', displayLength: 2500, activationPercent: 0.5, classes: 'green'})
+        }
+        else{
+            console.log('Failed to delete Jobs')
+            M.toast({html: 'Failed to Delete Jobs', displayLength: 2500, activationPercent: 0.5, classes: 'red'})
+        }
+    }
 }
 
 class Controller{
@@ -474,6 +591,15 @@ class Controller{
 
         this.model.bindGetJobsChanged(this.onGetJobsChanged)
         this.view.bindGetJobs(this.handleGetJobs)
+
+        this.model.bindUpdateMyProfileChanged(this.onUpdateMyProfileChanged)
+        this.view.bindUpdateMyProfile(this.handleUpdateMyProfile)
+
+        this.model.bindDeleteAllUsersChanged(this.onUpdateDeleteAllUsersChanged)
+        this.view.bindDeleteAllUsers(this.handleDeleteAllUsers)
+
+        this.model.bindDeleteAllJobsChanged(this.onDeleteAllJobsChanged)
+        this.view.bindDeleteAllJobs(this.handleDeleteAllJobs)
     }
 
     // HANDLERS
@@ -504,13 +630,18 @@ class Controller{
     handleGetJobs = (jobs) => {
         this.model.getJobs(jobs)
     }
-
-
-
     handleCreateJob = (job) => {
         this.model.createJob(job)
     }
-
+    handleUpdateMyProfile = (user) => {
+        this.model.updateMyProfile(user)
+    }
+    handleDeleteAllUsers = (user) => {
+        this.model.deleteAllUsers(user)
+    }
+    handleDeleteAllJobs = (job) => {
+        this.model.deleteAllJobs(job)
+    }
 
     // ONCHANGE
     onCreateUserChanged = (user)=>{
@@ -543,8 +674,15 @@ class Controller{
     onGetJobsChanged = (job)=>{
         this.view.updateGetJobsView(job)
     }
-
-
-
+    onUpdateMyProfileChanged = (user)=>{
+        this.view.updateUpdateMyProfileView(user)
+    }
+    onUpdateDeleteAllUsersChanged = (user)=>{
+        this.view.updateDeleteAllUsersView(user)
+    }
+    onDeleteAllJobsChanged = (job)=>{
+        this.view.updateDeleteAllJobsView(job)
+    }
 }
+
 const app = new Controller(new Model(), new View())

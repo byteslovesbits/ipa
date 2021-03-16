@@ -1,16 +1,12 @@
 const chalk = require("chalk")
-
-
 const green = chalk.black.bgGreen
 const red = chalk.black.bgRed
-
 const success = console.log
 const err = console.log
 
 const _404 = (message, error='')=>{
     console.log(red('404 - Not Found'))
 }
-
 
 const _201 = (message)=>{
     console.log(green('201 - Created'), message)
